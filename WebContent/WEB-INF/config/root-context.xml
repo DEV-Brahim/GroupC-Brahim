@@ -36,7 +36,7 @@
       </props>
     </property>
   </bean>
-
+	
   <!-- defining the transaction manager implementation -->
   <bean name="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
 
