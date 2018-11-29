@@ -2,56 +2,70 @@ package org.mql.platform.models;
 
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.Proxy;
+
 /**
- * @author mehdithe
+ * @author DEV-Brahim
  */
 @Entity
 public class Role {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
-  
-  private String name;
-  
-  @ManyToMany(mappedBy = "roles")
-  private Set<User> users;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-  public Role() {
-  }
+	private String name;
 
-  public Role(Integer id, String name) {
-	super();
-	this.id = id;
-	this.name = name;
-}
+	/*@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+	private Set<User> users;*/
 
-public Integer getId() {
-    return id;
-  }
+	public Role() {
+	}
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+	public Role(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 
-  public Set<User> getUsers() {
-    return users;
-  }
+	public Role(String name) {
+		super();
+		this.name = name;
+	}
 
-  public void setUsers(Set<User> users) {
-    this.users = users;
-  }
+	public Integer getId() {
+		return id;
+	}
 
-public String getName() {
-	return name;
-}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-public void setName(String name) {
-	this.name = name;
-}
+	/*public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}*/
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", name=" + name + "]";
+	}
+	
 }

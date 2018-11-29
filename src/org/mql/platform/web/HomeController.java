@@ -1,9 +1,9 @@
 package org.mql.platform.web;
 
+
 import org.mql.platform.business.RoleService;
-import org.mql.platform.business.impl.DefaultRoleService;
 import org.mql.platform.models.Role;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,30 +16,63 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class HomeController {
+	
+	
+	@Autowired
+	private RoleService rs;
+	
+	Role rol = new Role();
 
-  @GetMapping("/demo")
-  public String get() {
-  	// added a comment
-    return "test";
-  }
-  
-  @GetMapping("/roletest")
-  public String getroletest() {
-  	// added a comment
-    return "roletest";
-  }
-  
-  @RequestMapping(value = "/addrole", method = RequestMethod.GET)
-  public ModelAndView addRole(@RequestParam("role") String role) {
-	  ModelAndView mav = new ModelAndView("resultrole");
-	  RoleService rs = new DefaultRoleService();
-	  /*Role rolet = new Role(1, "m2");
-	  rs.addRole(rolet);*/
-	  Role resultrole = new Role();
-	  resultrole = rs.getRoleById(1);
-	  String msg = "Bien Ajouter";
-	  mav.addObject("message", msg);
-	  mav.addObject("role", resultrole);
-	  return mav;
-  }
+	@GetMapping("/demo")
+	public String get() {
+		
+		return "test";
+	}
+	
+	@GetMapping("/roletest")
+	public ModelAndView getroletest() {
+		ModelAndView mav = new ModelAndView("roletest");
+		mav.addObject("list", rs.getAllRoles());
+		return mav;
+	}
+
+	/*@GetMapping("/showrole")
+	public ModelAndView getshowrole() {
+		ModelAndView mav = new ModelAndView("roletest");
+		
+		r = rr.findAll();
+		for (Role role : r) {
+			System.out.println("Id : " + role.getId() + " // Name : " + role.getName());
+		}
+		mav.addObject("list", r);
+		return mav;
+	}*/
+
+	@RequestMapping(value = "/addrole", method = RequestMethod.GET)
+	public ModelAndView addRole(@RequestParam("role") String role) {
+		ModelAndView mav = new ModelAndView("roletest");
+		rs.addRole(new Role(role));
+		String msg = "Bien Ajouter";
+		mav.addObject("message", msg);
+		mav.addObject("list", rs.getAllRoles());
+		return mav;
+	}
+	
+	@RequestMapping(value = "/deleterole", method = RequestMethod.GET)
+	public ModelAndView deleteRole(@RequestParam("id") Integer id) {
+		ModelAndView mav = new ModelAndView("roletest");
+		rs.deleteRole(id);
+		String msg = "Bien Supprumer";
+		mav.addObject("message", msg);
+		mav.addObject("list", rs.getAllRoles());
+		return mav;
+	}
+	
+	@RequestMapping(value = "/getrole", method = RequestMethod.GET)
+	public ModelAndView getRole(@RequestParam("id") Integer id) {
+		ModelAndView mav = new ModelAndView("roletest");
+		mav.addObject("getrole", rs.getRoleById(id));
+		mav.addObject("list", rs.getAllRoles());
+		return mav;
+	}
 }
